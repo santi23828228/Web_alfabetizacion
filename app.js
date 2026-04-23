@@ -6,7 +6,7 @@
 // ─── CONFIGURACIÓN ───────────────────────────────────────────
 // Para usar la API de OpenAI real, reemplaza con tu API Key.
 // Si no tienes key, el chatbot usa respuestas simuladas (modo offline).
-const OPENAI_API_KEY = ""; // ← Pega tu API Key aquí (o deja vacío para modo simulado)
+const GROQ_API_KEY = "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"; // ← Pega tu API Key aquí (o deja vacío para modo simulado)
 
 // ─── DATOS DE SESIONES ────────────────────────────────────────
 const sessions = [
@@ -325,25 +325,20 @@ async function sendMessage() {
   try {
     let reply;
 
-    if (OPENAI_API_KEY) {
-      // ── MODO REAL: API de OpenAI ──────────────────────
-      const res = await fetch("https://api.openai.com/v1/chat/completions", {
+    if (GROQ_API_KEY) {
+      const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${OPENAI_API_KEY}`,
+          "Authorization": `Bearer ${GROQ_API_KEY}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "gpt-4o-mini",
+          model: "llama-3.1-8b-instant",
           max_tokens: 400,
           messages: [
             {
               role: "system",
-              content: `Eres un asistente educativo amigable y paciente que ayuda a adultos mayores a aprender tecnología de forma simple y clara. 
-              Responde siempre en español, usando un lenguaje sencillo, cálido y sin tecnicismos. 
-              Usa emojis ocasionalmente para hacer la conversación más amigable.
-              Puedes ayudar con temas de: internet, Google, Gmail, Excel, PowerPoint, seguridad digital, inteligencia artificial, videollamadas y uso del celular.
-              Si no sabes algo, dilo honestamente y sugiere consultar con un familiar o técnico de confianza.`
+              content: `Eres un asistente educativo amigable y paciente que ayuda a adultos mayores a aprender tecnología de forma simple y clara. Responde siempre en español, usando un lenguaje sencillo, cálido y sin tecnicismos. Usa emojis ocasionalmente. Puedes ayudar con: internet, Google, Gmail, Excel, PowerPoint, seguridad digital, inteligencia artificial y videollamadas.`
             },
             ...conversationHistory
           ]
